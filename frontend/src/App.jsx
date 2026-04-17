@@ -3,7 +3,7 @@ import Home from './pages/Home'
 
 const App = () => {
   return (
-    <div className='max-w-full h-screen  p-4 gap-2 '>
+    <div className="min-h-screen bg-[var(--surface)] text-[var(--on-surface)]">
       <Home />
     </div>
   )

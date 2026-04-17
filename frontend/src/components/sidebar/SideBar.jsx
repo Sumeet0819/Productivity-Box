@@ -4,14 +4,9 @@ import Calender from '../calender/Calender'
 
 const SideBar = () => {
     return (
-        <div className='col-span-1 grid grid-rows-2 gap-5 p-2'>
-            <div className='rounded-2xl'>
-                <Profile />
-            </div>
-
-            <div className='rounded-2xl'>
-                <Calender />
-            </div>
+        <div className="space-y-6">
+            <Profile />
+            <Calender />
         </div>
     )
 }

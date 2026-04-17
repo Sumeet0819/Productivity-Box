@@ -1,11 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
-.bg-custom-gradient {
-    background: #72C6EF;
-    /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #004E8F, #72C6EF);
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #004E8F, #72C6EF);
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+:root {
+  color-scheme: light;
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --surface: #f8faf9;
+  --surface-container-low: #f2f4f3;
+  --surface-container-lowest: #ffffff;
+  --primary: #006a3c;
+  --primary-container: #00864d;
+  --surface-tint: rgba(0, 106, 60, 0.4);
+  --on-surface: #191c1c;
+  --on-surface-variant: #3e4a40;
+  --outline-variant: rgba(189, 202, 189, 0.15);
+  --text-muted: #556351;
+  --shadow-focus: 0px 20px 40px rgba(0, 33, 15, 0.06);
+}
 
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: inherit;
+  scrollbar-color: rgba(0,106,60,0.35) transparent;
+  scrollbar-width: thin;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Global custom scrollbar styling */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(0, 106, 60, 0.35);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 106, 60, 0.55);
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.card-surface {
+  background: var(--surface-container-lowest);
+}
+
+.card-surface-soft {
+  background: var(--surface-container-low);
+}
+
+.card-glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--outline-variant);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-container));
+  color: white;
+}
+
+.btn-secondary {
+  background: var(--surface-container-low);
+  color: var(--on-surface);
+  border: 1px solid var(--outline-variant);
+}
+
+.input-ghost {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  color: var(--on-surface);
+}
+
+.text-label {
+  color: var(--on-surface-variant);
 }

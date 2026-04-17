@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { CheckCircle2, Circle, Plus, Trash2, ListTodo } from 'lucide-react';
 
 const Todo = () => {
-    // Initialize with some dummy tasks
     const [tasks, setTasks] = useState([
         { id: 1, text: 'Review quarterly goals', completed: false },
         { id: 2, text: 'Design weather widget UI', completed: true },
@@ -11,97 +10,79 @@ const Todo = () => {
     const [newTaskText, setNewTaskText] = useState('');
 
     const toggleTask = (id) => {
-        setTasks(tasks.map(task => 
-            task.id === id ? { ...task, completed: !task.completed } : task
-        ));
+        setTasks(tasks.map(task => task.id === id ? { ...task, completed: !task.completed } : task));
     };
 
     const addTask = (e) => {
         e.preventDefault();
         if (newTaskText.trim() === '') return;
-        
-        const newTask = {
-            id: Date.now(),
-            text: newTaskText.trim(),
-            completed: false
-        };
-        
-        setTasks([...tasks, newTask]);
+        setTasks([...tasks, { id: Date.now(), text: newTaskText.trim(), completed: false }]);
         setNewTaskText('');
     };
 
-    const deleteTask = (id) => {
-        setTasks(tasks.filter(task => task.id !== id));
-    };
-
-    // Calculate progress for the progress bar
+    const deleteTask = (id) => setTasks(tasks.filter(task => task.id !== id));
     const completedCount = tasks.filter(t => t.completed).length;
     const progress = tasks.length === 0 ? 0 : Math.round((completedCount / tasks.length) * 100);
 
     return (
-        <div className="w-full max-w-[320px] min-h-[420px] flex flex-col p-8 bg-white rounded-[2rem] shadow-[0_12px_40px_rgb(0,0,0,0.06)] border border-slate-100 font-sans">
-            
-            {/* -- Header Section -- */}
-            <div className="flex w-full items-center justify-between mb-5">
+        <div className="w-full min-h-[520px] rounded-[2rem] bg-[var(--surface-container-lowest)] p-8 shadow-[var(--shadow-focus)]">
+            <div className="flex items-start justify-between gap-4 mb-8">
                 <div className="flex items-center gap-3">
-                    <div className="bg-orange-100/50 p-2.5 rounded-2xl text-orange-400 border border-orange-100">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(0,106,60,0.12)] text-[var(--primary)]">
                         <ListTodo size={20} strokeWidth={2.5} />
                     </div>
-                    <h2 className="font-bold text-lg text-slate-800 tracking-tight">Tasks</h2>
+                    <div>
+                        <p className="text-[0.75rem] uppercase tracking-[0.35em] text-[var(--on-surface-variant)]">Tasks</p>
+                        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-[var(--on-surface)]">Today’s focus</h2>
+                    </div>
                 </div>
-                <span className="text-xs font-bold font-mono tracking-wider text-slate-400 bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-100">
+                <div className="rounded-full bg-[var(--surface-container-low)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-[var(--on-surface-variant)]">
                     {completedCount}/{tasks.length}
-                </span>
+                </div>
             </div>
 
-            {/* -- Progress Bar -- */}
-            <div className="w-full h-1.5 bg-slate-50 border border-slate-100 rounded-full mb-6 overflow-hidden">
-                <div 
-                    className="h-full bg-orange-400 rounded-full transition-all duration-500 ease-out"
-                    style={{ width: `${progress}%` }}
-                />
+            <div className="grid gap-3 mb-8">
+                <div className="h-2 overflow-hidden rounded-full bg-[var(--surface-container-low)]">
+                    <div className="h-full rounded-full bg-[var(--primary)] transition-all duration-500" style={{ width: `${progress}%` }} />
+                </div>
+                <div className="flex items-center justify-between text-xs uppercase tracking-[0.35em] text-[var(--on-surface-variant)]">
+                    <span>{completedCount} completed</span>
+                    <span>{progress}% progress</span>
+                </div>
             </div>
 
-            {/* -- Task List Section -- */}
-            <div className="flex flex-col gap-2.5 mb-2 max-h-[200px] overflow-y-auto pr-1">
+            <div className="flex flex-col gap-3 mb-8 max-h-[260px] overflow-y-auto pr-1">
                 {tasks.length === 0 ? (
-                    <p className="text-sm text-slate-400 font-medium text-center py-6 bg-slate-50 rounded-2xl border border-slate-100 border-dashed">
+                    <div className="rounded-[1.5rem] bg-[var(--surface-container-low)] p-8 text-center text-sm font-medium text-[var(--on-surface-variant)]">
                         All caught up! 🎉
-                    </p>
+                    </div>
                 ) : (
                     tasks.map(task => (
-                        <div 
-                            key={task.id} 
-                            className={`group flex items-center justify-between p-3.5 rounded-2xl border transition-all cursor-pointer ${
-                                task.completed 
-                                ? "bg-slate-50 border-slate-100 opacity-70" 
-                                : "bg-white border-slate-100 hover:border-orange-200 hover:shadow-sm"
-                            }`}
+                        <div
+                            key={task.id}
                             onClick={() => toggleTask(task.id)}
+                            className={`group flex items-center justify-between gap-4 rounded-[1.75rem] p-4 transition-all ${
+                                task.completed
+                                    ? 'bg-[var(--surface-container-low)] text-[var(--on-surface-variant)]'
+                                    : 'bg-[var(--surface)] hover:bg-[var(--surface-container-low)]'
+                            }`}
                         >
-                            <div className="flex items-center gap-3 overflow-hidden">
-                                {/* Toggle Icon */}
+                            <div className="flex items-center gap-3">
                                 {task.completed ? (
-                                    <CheckCircle2 size={18} className="text-orange-400 shrink-0" strokeWidth={2.5} />
+                                    <CheckCircle2 size={18} className="text-[var(--primary)]" strokeWidth={2.5} />
                                 ) : (
-                                    <Circle size={18} className="text-slate-300 group-hover:text-orange-300 shrink-0 transition-colors" strokeWidth={2.5} />
+                                    <Circle size={18} className="text-[var(--on-surface-variant)] transition-colors group-hover:text-[var(--primary)]" strokeWidth={2.5} />
                                 )}
-                                
-                                {/* Task Text */}
-                                <span className={`text-[13px] font-semibold truncate transition-all ${
-                                    task.completed ? "text-slate-400 line-through decoration-slate-300" : "text-slate-700"
-                                }`}>
+                                <span className={`text-sm font-semibold ${task.completed ? 'line-through' : ''}`}>
                                     {task.text}
-                               </span>
+                                </span>
                             </div>
-                            
-                            {/* Delete Button (Appears on Hover) */}
-                            <button 
+                            <button
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     deleteTask(task.id);
                                 }}
-                                className="text-slate-300 opacity-0 group-hover:opacity-100 hover:text-red-400 transition-all p-1 rounded-lg"
+                                className="rounded-full p-2 text-[var(--on-surface-variant)] transition hover:text-red-500"
                             >
                                 <Trash2 size={16} />
                             </button>
@@ -110,19 +91,18 @@ const Todo = () => {
                 )}
             </div>
 
-            {/* -- Add Task Input Section -- */}
-            <form onSubmit={addTask} className="relative mt-auto">
-                <input 
-                    type="text" 
+            <form onSubmit={addTask} className="relative">
+                <input
+                    type="text"
                     value={newTaskText}
                     onChange={(e) => setNewTaskText(e.target.value)}
-                    placeholder="Add new task..." 
-                    className="w-full bg-white border-2 border-slate-100 text-slate-700 text-sm font-semibold rounded-[1.25rem] px-4 py-3.5 pr-12 focus:outline-none focus:border-orange-300 focus:bg-slate-50 transition-all placeholder:text-slate-300 shadow-sm"
+                    placeholder="Add a new task"
+                    className="w-full rounded-full border border-[var(--outline-variant)] bg-[var(--surface-container-lowest)] px-5 py-4 text-sm text-[var(--on-surface)] shadow-sm focus:outline-none focus:border-[var(--primary)]"
                 />
-                <button 
+                <button
                     type="submit"
                     disabled={newTaskText.trim() === ''}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-orange-400 text-white p-2 rounded-xl hover:bg-orange-500 disabled:opacity-50 disabled:hover:bg-orange-400 transition-colors shadow-sm shadow-orange-400/30"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[var(--primary)] text-white transition hover:bg-[var(--primary-container)] disabled:opacity-50"
                 >
                     <Plus size={16} strokeWidth={3.5} />
                 </button>
