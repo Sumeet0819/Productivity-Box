@@ -1,26 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CheckCircle2, Circle, Plus, Trash2, ListTodo } from 'lucide-react';
+import { todoService, fetchProfile } from '../../services/api';
 
 const Todo = () => {
-    const [tasks, setTasks] = useState([
-        { id: 1, text: 'Review quarterly goals', completed: false },
-        { id: 2, text: 'Design weather widget UI', completed: true },
-        { id: 3, text: 'Sync with the backend team', completed: false }
-    ]);
+    const [tasks, setTasks] = useState([]);
     const [newTaskText, setNewTaskText] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
 
-    const toggleTask = (id) => {
-        setTasks(tasks.map(task => task.id === id ? { ...task, completed: !task.completed } : task));
+    useEffect(() => {
+        const loadTodos = async () => {
+            try {
+                await fetchProfile(); // Ensure user is bootstrapped
+                const fetchedTodos = await todoService.getTodos();
+                setTasks(fetchedTodos);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        loadTodos();
+    }, []);
+
+    const toggleTask = async (id) => {
+        const taskToUpdate = tasks.find(t => t._id === id);
+        if(!taskToUpdate) return;
+        
+        // Optimistic UI update
+        setTasks(tasks.map(task => task._id === id ? { ...task, completed: !task.completed } : task));
+        
+        try {
+            await todoService.updateTodo(id, { completed: !taskToUpdate.completed });
+        } catch(error) {
+            console.error('Failed to toggle task', error);
+            // Revert state if failed
+            setTasks(tasks.map(task => task._id === id ? { ...task, completed: taskToUpdate.completed } : task));
+        }
     };
 
-    const addTask = (e) => {
+    const addTask = async (e) => {
         e.preventDefault();
         if (newTaskText.trim() === '') return;
-        setTasks([...tasks, { id: Date.now(), text: newTaskText.trim(), completed: false }]);
+        
+        const text = newTaskText.trim();
         setNewTaskText('');
+        
+        try {
+            const newTask = await todoService.addTodo(text);
+            setTasks([...tasks, newTask]);
+        } catch (error) {
+            console.error('Failed to add task', error);
+        }
     };
 
-    const deleteTask = (id) => setTasks(tasks.filter(task => task.id !== id));
+    const deleteTask = async (id) => {
+        setTasks(tasks.filter(task => task._id !== id));
+        try {
+            await todoService.deleteTodo(id);
+        } catch (error) {
+            console.error('Failed to delete task', error);
+        }
+    };
+
     const completedCount = tasks.filter(t => t.completed).length;
     const progress = tasks.length === 0 ? 0 : Math.round((completedCount / tasks.length) * 100);
 
@@ -59,8 +100,8 @@ const Todo = () => {
                 ) : (
                     tasks.map(task => (
                         <div
-                            key={task.id}
-                            onClick={() => toggleTask(task.id)}
+                            key={task._id}
+                            onClick={() => toggleTask(task._id)}
                             className={`group flex items-center justify-between gap-4 rounded-[1.5rem] p-3 transition-all ${task.completed
                                 ? 'bg-[var(--surface-container-low)] text-[var(--on-surface-variant)]'
                                 : 'bg-[var(--surface)] hover:bg-[var(--surface-container-low)]'
@@ -79,7 +120,7 @@ const Todo = () => {
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    deleteTask(task.id);
+                                    deleteTask(task._id);
                                 }}
                                 className="rounded-full p-2 text-[var(--on-surface-variant)] transition hover:text-red-500"
                             >

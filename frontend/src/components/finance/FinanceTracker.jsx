@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Wallet, TrendingUp, TrendingDown, Plus, Minus, X, Calculator, Eye, EyeOff, RotateCcw } from 'lucide-react';
+import { financeService } from '../../services/api';
 
 const FinanceTracker = () => {
     const [balance, setBalance] = useState(0);
@@ -13,25 +14,51 @@ const FinanceTracker = () => {
     const [popupType, setPopupType] = useState('income'); // 'income' or 'expense'
     const [amountInput, setAmountInput] = useState('');
 
+    const loadStats = async () => {
+        try {
+            const stats = await financeService.getStats();
+            setBalance(stats.balance);
+            setEarned(stats.earned);
+            setSpent(stats.spent);
+        } catch (error) {
+            console.error('Failed to load stats', error);
+        }
+    };
+
+    useEffect(() => {
+        loadStats();
+    }, []);
+
     const formatCurrency = (val) => {
         if (!isAmountsVisible) return '₹ ••••••';
         return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(val);
     };
 
-    const handleClear = () => {
-        setBalance(0);
-        setSpent(0);
-        setEarned(0);
+    const handleClear = async () => {
+        try {
+            await financeService.clearTransactions();
+            await loadStats();
+        } catch (error) {
+            console.error('Failed to clear', error);
+        }
     };
 
-    const handleQuickIncome = () => {
-        setEarned(prev => prev + 150);
-        setBalance(prev => prev + 150);
+    const handleQuickIncome = async () => {
+        try {
+            await financeService.addTransaction(150, 'income');
+            await loadStats();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
-    const handleQuickExpense = () => {
-        setSpent(prev => prev + 80);
-        setBalance(prev => prev - 80);
+    const handleQuickExpense = async () => {
+        try {
+            await financeService.addTransaction(80, 'expense');
+            await loadStats();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const openPopup = (type = 'income') => {
@@ -40,19 +67,18 @@ const FinanceTracker = () => {
         setIsPopupOpen(true);
     };
 
-    const handleTransactionSubmit = (e) => {
+    const handleTransactionSubmit = async (e) => {
         e.preventDefault();
         const amount = parseFloat(amountInput);
         if (isNaN(amount) || amount <= 0) return;
 
-        if (popupType === 'income') {
-            setEarned(prev => prev + amount);
-            setBalance(prev => prev + amount);
-        } else {
-            setSpent(prev => prev + amount);
-            setBalance(prev => prev - amount);
+        try {
+            await financeService.addTransaction(amount, popupType);
+            await loadStats();
+            setIsPopupOpen(false);
+        } catch (error) {
+            console.error(error);
         }
-        setIsPopupOpen(false);
     };
 
     return (

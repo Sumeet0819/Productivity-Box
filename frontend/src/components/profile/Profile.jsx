@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { fetchProfile } from '../../services/api';
 
 const Profile = () => {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const loadProfile = async () => {
+            try {
+                const data = await fetchProfile();
+                setUser(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        loadProfile();
+    }, []);
+
+    if (!user) return (
+        <div className="relative overflow-hidden rounded-[2rem] bg-[var(--surface-container-lowest)] shadow-[var(--shadow-focus)] h-[420px] animate-pulse" />
+    );
+
     return (
         <div className="relative overflow-hidden rounded-[2rem] bg-[var(--surface-container-lowest)] shadow-[var(--shadow-focus)]">
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,106,60,0.12)_0%,rgba(255,255,255,0.02)_60%)] pointer-events-none" />
             <img
-                src="https://i.pinimg.com/736x/ad/44/ef/ad44efff26f604077495754d6331bb5e.jpg"
+                src={user.profilePicture || "https://i.pinimg.com/736x/ad/44/ef/ad44efff26f604077495754d6331bb5e.jpg"}
                 alt="profile"
                 className="h-[420px] w-full object-cover"
             />
@@ -31,10 +50,10 @@ const Profile = () => {
                     Featured
                 </span>
                 <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">
-                    Marline Betbye
+                    {user.name}
                 </h2>
                 <p className="mt-2 max-w-xs text-sm leading-6 text-slate-300">
-                    Curating productive rituals for a thoughtful day in the botanical workspace.
+                    {user.bio}
                 </p>
             </div>
         </div>
