@@ -13,6 +13,8 @@ const FinanceTracker = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupType, setPopupType] = useState('income'); // 'income' or 'expense'
     const [amountInput, setAmountInput] = useState('');
+    const [descriptionInput, setDescriptionInput] = useState('');
+    const [categoryInput, setCategoryInput] = useState('Others');
 
     const loadStats = async () => {
         try {
@@ -45,7 +47,7 @@ const FinanceTracker = () => {
 
     const handleQuickIncome = async () => {
         try {
-            await financeService.addTransaction(150, 'income');
+            await financeService.addTransaction(150, 'income', 'Quick Income', 'Gift');
             await loadStats();
         } catch (error) {
             console.error(error);
@@ -54,7 +56,7 @@ const FinanceTracker = () => {
 
     const handleQuickExpense = async () => {
         try {
-            await financeService.addTransaction(80, 'expense');
+            await financeService.addTransaction(80, 'expense', 'Quick Coffee', 'Food');
             await loadStats();
         } catch (error) {
             console.error(error);
@@ -64,6 +66,8 @@ const FinanceTracker = () => {
     const openPopup = (type = 'income') => {
         setPopupType(type);
         setAmountInput('');
+        setDescriptionInput('');
+        setCategoryInput('Others');
         setIsPopupOpen(true);
     };
 
@@ -73,7 +77,7 @@ const FinanceTracker = () => {
         if (isNaN(amount) || amount <= 0) return;
 
         try {
-            await financeService.addTransaction(amount, popupType);
+            await financeService.addTransaction(amount, popupType, descriptionInput, categoryInput);
             await loadStats();
             setIsPopupOpen(false);
         } catch (error) {
@@ -83,7 +87,7 @@ const FinanceTracker = () => {
 
     return (
         <>
-            <div className="w-full min-h-[220px] flex flex-col justify-between rounded-[2rem] bg-[var(--surface-container-lowest)] p-4 shadow-[var(--shadow-focus)] relative overflow-hidden">
+            <div className="w-full min-h-[300px] flex flex-col justify-between rounded-[2rem] bg-[var(--surface-container-lowest)] p-6 shadow-[var(--shadow-focus)] relative overflow-hidden">
                 {/* Header Area */}
                 <div className="flex items-start justify-between gap-2">
                     <div>
@@ -178,8 +182,8 @@ const FinanceTracker = () => {
 
             {/* Transaction Pop-up Modal */}
             {isPopupOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-                    <div className="w-full max-w-sm rounded-[2.5rem] bg-[var(--surface-container-lowest)] p-6 shadow-2xl animate-in zoom-in-95 duration-200 border border-[var(--surface-container-low)] text-[var(--on-surface)]">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200 overflow-y-auto">
+                    <div className="w-full max-w-sm my-auto rounded-[2.5rem] bg-[var(--surface-container-lowest)] p-6 shadow-2xl animate-in zoom-in-95 duration-200 border border-[var(--surface-container-low)] text-[var(--on-surface)]">
                         <div className="flex items-center justify-between mb-4">
                             <h3 className="text-lg font-semibold flex items-center gap-2">
                                 Custom Transaction
@@ -207,10 +211,10 @@ const FinanceTracker = () => {
                             </button>
                         </div>
 
-                        <form onSubmit={handleTransactionSubmit} className="space-y-6">
+                        <form onSubmit={handleTransactionSubmit} className="space-y-4">
                             <div>
                                 <label className="block text-[0.65rem] font-bold uppercase tracking-[0.2em] text-[var(--on-surface-variant)] mb-2 px-2">
-                                    Enter Amount
+                                    Amount
                                 </label>
                                 <div className="relative">
                                     <span className="absolute left-5 top-1/2 -translate-y-1/2 font-semibold text-[var(--on-surface-variant)] text-lg">₹</span>
@@ -222,15 +226,46 @@ const FinanceTracker = () => {
                                         value={amountInput}
                                         onChange={(e) => setAmountInput(e.target.value)}
                                         placeholder="0.00"
-                                        className="w-full rounded-[1.5rem] bg-[var(--surface-container-low)] border-[1.5px] border-transparent px-10 py-4 text-xl font-semibold text-[var(--on-surface)] transition-all placeholder:text-[var(--on-surface-variant)]/40 focus:border-[var(--primary)] focus:bg-[var(--surface-container-lowest)] focus:outline-none focus:ring-4 focus:ring-[var(--primary)]/10"
+                                        className="w-full rounded-[1.5rem] bg-[var(--surface-container-low)] border-[1.5px] border-transparent px-10 py-4 text-xl font-semibold text-[var(--on-surface)] transition-all focus:border-[var(--primary)] focus:bg-[var(--surface-container-lowest)] focus:outline-none"
                                         required
                                     />
                                 </div>
                             </div>
 
+                            <div>
+                                <label className="block text-[0.65rem] font-bold uppercase tracking-[0.2em] text-[var(--on-surface-variant)] mb-2 px-2">
+                                    Description
+                                </label>
+                                <input
+                                    type="text"
+                                    value={descriptionInput}
+                                    onChange={(e) => setDescriptionInput(e.target.value)}
+                                    placeholder="What was this for?"
+                                    className="w-full rounded-[1.5rem] bg-[var(--surface-container-low)] border-[1.5px] border-transparent px-5 py-4 text-sm text-[var(--on-surface)] transition-all focus:border-[var(--primary)] focus:bg-[var(--surface-container-lowest)] focus:outline-none"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-[0.65rem] font-bold uppercase tracking-[0.2em] text-[var(--on-surface-variant)] mb-2 px-2">
+                                    Category
+                                </label>
+                                <select
+                                    value={categoryInput}
+                                    onChange={(e) => setCategoryInput(e.target.value)}
+                                    className="w-full rounded-[1.5rem] bg-[var(--surface-container-low)] border-[1.5px] border-transparent px-5 py-4 text-sm text-[var(--on-surface)] transition-all focus:border-[var(--primary)] focus:bg-[var(--surface-container-lowest)] focus:outline-none appearance-none"
+                                >
+                                    <option value="Others">Others</option>
+                                    <option value="Food">Food & Drinks</option>
+                                    <option value="Shopping">Shopping</option>
+                                    <option value="Work">Work</option>
+                                    <option value="Health">Health</option>
+                                    <option value="Travel">Travel</option>
+                                </select>
+                            </div>
+
                             <button
                                 type="submit"
-                                className={`w-full rounded-[1.5rem] py-4 text-sm font-bold text-white shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] ${popupType === 'income' ? 'bg-[var(--primary)] shadow-[var(--primary)]/20 hover:bg-[var(--primary)]/90' : 'bg-red-500 shadow-red-500/20 hover:bg-red-600'
+                                className={`w-full rounded-[1.5rem] py-4 mt-4 text-sm font-bold text-white shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] ${popupType === 'income' ? 'bg-[var(--primary)] shadow-[var(--primary)]/20 hover:bg-[var(--primary)]/90' : 'bg-red-500 shadow-red-500/20 hover:bg-red-600'
                                     }`}
                             >
                                 Confirm {popupType === 'income' ? 'Income' : 'Expense'}

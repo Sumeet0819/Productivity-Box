@@ -13,6 +13,11 @@ const todoSchema = new mongoose.Schema({
     completed: {
         type: Boolean,
         default: false
+    },
+    status: {
+        type: String,
+        enum: ['todo', 'in-progress', 'done'],
+        default: 'todo'
     }
 }, { timestamps: true });
 

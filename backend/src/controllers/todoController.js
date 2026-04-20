@@ -69,3 +69,40 @@ export const deleteTodo = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// @desc    Get todo stats for the last 7 days
+// @route   GET /api/todos/stats
+export const getTodoStats = async (req, res) => {
+    try {
+        const stats = [];
+        // Map of weekdays for consistency if needed, but toLocaleDateString is fine
+        for (let i = 6; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            date.setHours(0, 0, 0, 0);
+            
+            const nextDay = new Date(date);
+            nextDay.setDate(nextDay.getDate() + 1);
+
+            const created = await Todo.countDocuments({
+                user: req.user.id,
+                createdAt: { $gte: date, $lt: nextDay }
+            });
+
+            const completedCount = await Todo.countDocuments({
+                user: req.user.id,
+                completed: true,
+                updatedAt: { $gte: date, $lt: nextDay }
+            });
+
+            stats.push({
+                name: date.toLocaleDateString('en-US', { weekday: 'short' }),
+                active: created, // Maps to 'active' in graph for now
+                todo: completedCount // Maps to 'todo' (completed) in graph for now
+            });
+        }
+        res.json(stats);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

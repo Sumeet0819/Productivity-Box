@@ -21,6 +21,18 @@ const userSchema = new mongoose.Schema({
     profilePicture: {
         type: String,
         default: 'https://i.pinimg.com/736x/ad/44/ef/ad44efff26f604077495754d6331bb5e.jpg'
+    },
+    upiIds: {
+        type: [String],
+        default: []
+    },
+    cards: {
+        type: [{
+            type: { type: String }, // e.g. Visa, Mastercard
+            last4: { type: String },
+            provider: { type: String } // e.g. HDFC, SBI
+        }],
+        default: []
     }
 }, { timestamps: true });
 

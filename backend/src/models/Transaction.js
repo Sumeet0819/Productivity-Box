@@ -18,6 +18,14 @@ const transactionSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    description: {
+        type: String,
+        default: 'General Transaction'
+    },
+    category: {
+        type: String,
+        default: 'Others'
     }
 }, { timestamps: true });
 

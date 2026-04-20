@@ -6,6 +6,7 @@ import connectDB from './src/config/db.js';
 import authRoutes from './src/routes/authRoutes.js';
 import todoRoutes from './src/routes/todoRoutes.js';
 import financeRoutes from './src/routes/financeRoutes.js';
+import goalRoutes from './src/routes/goalRoutes.js';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/todos', todoRoutes);
 app.use('/api/finance', financeRoutes);
+app.use('/api/goals', goalRoutes);
 
 app.get('/', (req, res) => {
     res.send('Daily Utility Backend API is running...');

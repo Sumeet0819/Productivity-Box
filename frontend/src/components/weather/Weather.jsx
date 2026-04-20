@@ -48,7 +48,7 @@ const Weather = () => {
 
     if (loading) {
         return (
-            <div className="w-full min-h-[220px] rounded-[2rem] bg-[var(--surface-container-lowest)] p-4 shadow-[var(--shadow-focus)] flex flex-col items-center justify-center text-[var(--on-surface-variant)]">
+            <div className="w-full min-h-[300px] rounded-[2rem] bg-[var(--surface-container-lowest)] p-6 shadow-[var(--shadow-focus)] flex flex-col items-center justify-center text-[var(--on-surface-variant)]">
                 <Loader2 className="animate-spin text-[var(--primary)]" size={22} />
                 <p className="mt-2 text-sm font-medium text-center">
                     {!isGeolocationEnabled ? 'Waiting for location...' : 'Loading weather...'}
@@ -59,7 +59,7 @@ const Weather = () => {
 
     if (!weatherData) {
         return (
-            <div className="w-full min-h-[220px] rounded-[2rem] bg-[var(--surface-container-lowest)] p-4 shadow-[var(--shadow-focus)] flex flex-col items-center justify-center text-[var(--on-surface-variant)]">
+            <div className="w-full min-h-[300px] rounded-[2rem] bg-[var(--surface-container-lowest)] p-6 shadow-[var(--shadow-focus)] flex flex-col items-center justify-center text-[var(--on-surface-variant)]">
                 <p className="text-sm font-bold">Failed to load weather</p>
             </div>
         );
@@ -68,7 +68,7 @@ const Weather = () => {
     const { label, icon: WeatherIcon, accent } = getWeatherDetails(weatherData.weatherCode, weatherData.isDay);
 
     return (
-        <div className="w-full min-h-[220px] rounded-[2rem] bg-[var(--surface-container-lowest)] p-4 shadow-[var(--shadow-focus)]">
+        <div className="w-full min-h-[300px] rounded-[2rem] bg-[var(--surface-container-lowest)] p-6 shadow-[var(--shadow-focus)] flex flex-col justify-between">
             <div className="flex items-start justify-between gap-2">
                 <div>
                     <p className="text-[0.55rem] uppercase tracking-[0.35em] text-[var(--on-surface-variant)]">Weather</p>

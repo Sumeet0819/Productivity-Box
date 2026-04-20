@@ -53,6 +53,8 @@ export const loginUser = async (req, res) => {
                 email: user.email,
                 profilePicture: user.profilePicture,
                 bio: user.bio,
+                upiIds: user.upiIds,
+                cards: user.cards,
                 token: generateToken(user._id)
             });
         } else {
@@ -87,7 +89,12 @@ export const bootstrapUser = async (req, res) => {
             user = await User.create({
                 name: 'Marline Betbye',
                 email,
-                password: hashedPassword
+                password: hashedPassword,
+                upiIds: ['marline@okaxis', 'betbye@paytm'],
+                cards: [
+                    { type: 'Visa', last4: '4242', provider: 'HDFC Bank' },
+                    { type: 'Mastercard', last4: '8812', provider: 'SBI Card' }
+                ]
             });
         }
 
@@ -97,8 +104,43 @@ export const bootstrapUser = async (req, res) => {
             email: user.email,
             profilePicture: user.profilePicture,
             bio: user.bio,
+            upiIds: user.upiIds,
+            cards: user.cards,
             token: generateToken(user._id)
         });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+export const updateProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (user) {
+            user.name = req.body.name || user.name;
+            user.bio = req.body.bio !== undefined ? req.body.bio : user.bio;
+            user.profilePicture = req.body.profilePicture || user.profilePicture;
+            user.upiIds = req.body.upiIds || user.upiIds;
+            user.cards = req.body.cards || user.cards;
+
+            const updatedUser = await user.save();
+
+            res.json({
+                _id: updatedUser.id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+                profilePicture: updatedUser.profilePicture,
+                bio: updatedUser.bio,
+                upiIds: updatedUser.upiIds,
+                cards: updatedUser.cards,
+                token: generateToken(updatedUser._id)
+            });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
