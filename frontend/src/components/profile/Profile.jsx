@@ -69,13 +69,13 @@ const Profile = () => {
 
                 {/* Top Actions */}
                 <div className="absolute top-4 right-4 flex gap-2 z-20">
-                    <button 
+                    <button
                         onClick={() => setIsEditing(true)}
                         className="p-2 rounded-full bg-black/40 text-white hover:bg-black/60 transition backdrop-blur-md"
                     >
                         <Settings size={18} />
                     </button>
-                    <button 
+                    <button
                         onClick={handleLogout}
                         className="p-2 rounded-full bg-black/40 text-white hover:bg-red-500/80 transition backdrop-blur-md"
                     >
@@ -101,7 +101,7 @@ const Profile = () => {
             {isEditing && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm">
                     <div className="w-full max-w-md bg-[var(--surface-container-lowest)] p-6 rounded-3xl shadow-2xl relative border border-[var(--surface-container-low)]">
-                        <button 
+                        <button
                             onClick={() => setIsEditing(false)}
                             className="absolute top-4 right-4 text-[var(--on-surface-variant)] hover:text-[var(--on-surface)]"
                         >
@@ -111,30 +111,30 @@ const Profile = () => {
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-xs uppercase tracking-wider text-[var(--on-surface-variant)] mb-1">Name</label>
-                                <input 
+                                <input
                                     className="w-full bg-[var(--surface-container-low)] rounded-xl px-4 py-3 outline-none text-[var(--on-surface)]"
                                     value={editData.name}
-                                    onChange={(e) => setEditData({...editData, name: e.target.value})}
+                                    onChange={(e) => setEditData({ ...editData, name: e.target.value })}
                                 />
                             </div>
                             <div>
                                 <label className="block text-xs uppercase tracking-wider text-[var(--on-surface-variant)] mb-1">Bio</label>
-                                <textarea 
+                                <textarea
                                     className="w-full bg-[var(--surface-container-low)] rounded-xl px-4 py-3 outline-none text-[var(--on-surface)] resize-none"
                                     rows={3}
                                     value={editData.bio}
-                                    onChange={(e) => setEditData({...editData, bio: e.target.value})}
+                                    onChange={(e) => setEditData({ ...editData, bio: e.target.value })}
                                 />
                             </div>
                             <div>
                                 <label className="block text-xs uppercase tracking-wider text-[var(--on-surface-variant)] mb-1">Avatar URL</label>
-                                <input 
+                                <input
                                     className="w-full bg-[var(--surface-container-low)] rounded-xl px-4 py-3 outline-none text-[var(--on-surface)]"
                                     value={editData.profilePicture}
-                                    onChange={(e) => setEditData({...editData, profilePicture: e.target.value})}
+                                    onChange={(e) => setEditData({ ...editData, profilePicture: e.target.value })}
                                 />
                             </div>
-                            <button 
+                            <button
                                 onClick={handleSave}
                                 className="w-full py-3 rounded-full btn-primary text-white font-semibold mt-2 shadow-[0_12px_24px_rgba(0,33,15,0.12)] transition hover:scale-[1.02]"
                             >

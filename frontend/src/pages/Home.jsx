@@ -12,8 +12,8 @@ import ActivityGraph from '../components/activity/ActivityGraph'
 import Goals from '../components/goals/Goals'
 import Quotes from '../components/quotes/Quotes'
 
-const DashboardSection = ({ title, to, children }) => (
-    <div className="flex flex-col gap-3 h-full">
+const DashboardSection = ({ title, to, children, className = "" }) => (
+    <div className={`flex flex-col gap-2 mt-4 ${className}`}>
         <div className="flex items-center justify-between px-2">
             <h3 className="text-[0.65rem] font-bold uppercase tracking-[0.3em] text-[var(--on-surface-variant)] flex items-center gap-2">
                 <Sparkles size={10} className="text-[var(--primary)]" />
@@ -65,10 +65,10 @@ const Home = () => {
                         <div className="grid grid-cols-1 items-stretch gap-8 xl:grid-cols-12">
                             {/* Column 1 */}
                             <div className="xl:col-span-3 flex flex-col gap-8">
-                                <DashboardSection title="Identity">
+                                <DashboardSection title="Identity" className="h-[420px]">
                                     <Profile />
                                 </DashboardSection>
-                                <DashboardSection title="Velocity">
+                                <DashboardSection title="Velocity" className="h-full">
                                     <ActivityGraph />
                                 </DashboardSection>
                             </div>
@@ -78,28 +78,30 @@ const Home = () => {
                                 <DashboardSection title="Atmosphere">
                                     <Weather />
                                 </DashboardSection>
-                                <DashboardSection title="Objectives" to="/goals">
+                                <DashboardSection title="Objectives" to="/goals" className="flex-1">
                                     <Goals />
                                 </DashboardSection>
                             </div>
 
                             {/* Column 3 */}
                             <div className="xl:col-span-3 flex flex-col gap-8">
-                                <DashboardSection title="Capital" to="/finance">
+                                <DashboardSection title="Capital" to="/finance" className="h-full">
                                     <FinanceTracker />
                                 </DashboardSection>
-                                <DashboardSection title="Deep Work">
+                                <DashboardSection title="Deep Work" className="h-full">
                                     <PomoDoro />
                                 </DashboardSection>
-                                <Quotes />
+                                <DashboardSection title="Insight" className="h-full">
+                                    <Quotes />
+                                </DashboardSection>
                             </div>
 
                             {/* Column 4 */}
                             <div className="xl:col-span-3 flex flex-col gap-8">
-                                <DashboardSection title="Execution" to="/todo">
+                                <DashboardSection title="Execution" to="/todo" className="h-full">
                                     <Todo />
                                 </DashboardSection>
-                                <DashboardSection title="Timeline">
+                                <DashboardSection title="Timeline" className="h-full">
                                     <Calender />
                                 </DashboardSection>
                             </div>
