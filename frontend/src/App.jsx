@@ -5,6 +5,7 @@ import Auth from './pages/Auth'
 import TodoPage from './pages/TodoPage'
 import GoalsPage from './pages/GoalsPage'
 import FinancePage from './pages/FinancePage'
+import ScratchpadPage from './pages/ScratchpadPage'
 
 const PrivateRoute = ({ children }) => {
   const user = localStorage.getItem('user');
@@ -35,6 +36,11 @@ const App = () => {
           <Route path="/finance" element={
             <PrivateRoute>
               <FinancePage />
+            </PrivateRoute>
+          } />
+          <Route path="/scratchpad" element={
+            <PrivateRoute>
+              <ScratchpadPage />
             </PrivateRoute>
           } />
         </Routes>

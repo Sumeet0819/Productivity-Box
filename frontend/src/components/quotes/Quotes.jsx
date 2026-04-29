@@ -18,7 +18,7 @@ const Quotes = () => {
     }, []);
 
     return (
-        <div className="relative group overflow-hidden rounded-[2.5rem] bg-[var(--surface-container-lowest)] p-8 shadow-[var(--shadow-focus)] transition-all duration-500 hover:shadow-2xl h-full flex flex-col">
+        <div className="relative group overflow-hidden rounded-[2.5rem] bg-[var(--surface-container-lowest)] p-8 shadow-[var(--shadow-focus)] transition-all duration-500 hover:shadow-2xl h-full flex flex-col max-h-[450px]">
             {/* Animated Gradient Background */}
             <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             

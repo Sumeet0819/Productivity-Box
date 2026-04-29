@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import SideBar from '../components/sidebar/SideBar';
 import { todoService } from '../services/api';
-import { List, LayoutGrid, Kanban, Plus, Search, Filter, Loader2 } from 'lucide-react';
-import Todo from '../components/todo/Todo';
-import KanbanView from '../components/todo/KanbanView';
+import { Search, Loader2 } from 'lucide-react';
 import GridView from '../components/todo/GridView';
 
 const TodoPage = () => {
-    const [view, setView] = useState('kanban'); // 'list', 'kanban', 'grid'
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -27,14 +24,7 @@ const TodoPage = () => {
         }
     };
 
-    const handleToggleStatus = async (id, newStatus) => {
-        try {
-            const updated = await todoService.updateTodo(id, { status: newStatus });
-            setTasks(tasks.map(t => t._id === id ? updated : t));
-        } catch (error) {
-            console.error(error);
-        }
-    };
+
 
     const handleToggleComplete = async (id, completed) => {
         try {
@@ -87,30 +77,7 @@ const TodoPage = () => {
                                 />
                             </div>
 
-                            {/* View Switcher */}
-                            <div className="flex p-1 rounded-2xl bg-[var(--surface-container-low)] border border-[var(--surface-container-high)] shadow-sm">
-                                <button 
-                                    onClick={() => setView('list')}
-                                    className={`p-2 rounded-xl transition-all ${view === 'list' ? 'bg-[var(--surface-container-lowest)] text-[var(--primary)] shadow-md' : 'text-[var(--on-surface-variant)] hover:text-[var(--on-surface)]'}`}
-                                    title="List View"
-                                >
-                                    <List size={18} />
-                                </button>
-                                <button 
-                                    onClick={() => setView('kanban')}
-                                    className={`p-2 rounded-xl transition-all ${view === 'kanban' ? 'bg-[var(--surface-container-lowest)] text-[var(--primary)] shadow-md' : 'text-[var(--on-surface-variant)] hover:text-[var(--on-surface)]'}`}
-                                    title="Kanban View"
-                                >
-                                    <Kanban size={18} />
-                                </button>
-                                <button 
-                                    onClick={() => setView('grid')}
-                                    className={`p-2 rounded-xl transition-all ${view === 'grid' ? 'bg-[var(--surface-container-lowest)] text-[var(--primary)] shadow-md' : 'text-[var(--on-surface-variant)] hover:text-[var(--on-surface)]'}`}
-                                    title="Grid View"
-                                >
-                                    <LayoutGrid size={18} />
-                                </button>
-                            </div>
+
                         </div>
                     </header>
 
@@ -120,29 +87,11 @@ const TodoPage = () => {
                                 <Loader2 className="animate-spin text-[var(--primary)]" size={40} />
                             </div>
                         ) : (
-                            <>
-                                {view === 'list' && (
-                                    <div className="h-full max-w-4xl mx-auto flex flex-col bg-[var(--surface-container-lowest)] rounded-[2.5rem] p-10 shadow-[var(--shadow-focus)] overflow-hidden border border-[var(--surface-container-low)]">
-                                        <Todo fullScale={true} />
-                                    </div>
-                                )}
-
-                                {view === 'kanban' && (
-                                    <KanbanView 
-                                        tasks={filteredTasks} 
-                                        onToggleStatus={handleToggleStatus} 
-                                        onDelete={handleDelete} 
-                                    />
-                                )}
-
-                                {view === 'grid' && (
-                                    <GridView 
-                                        tasks={filteredTasks} 
-                                        onToggleComplete={handleToggleComplete} 
-                                        onDelete={handleDelete} 
-                                    />
-                                )}
-                            </>
+                            <GridView 
+                                tasks={filteredTasks} 
+                                onToggleComplete={handleToggleComplete} 
+                                onDelete={handleDelete} 
+                            />
                         )}
                     </div>
                 </div>

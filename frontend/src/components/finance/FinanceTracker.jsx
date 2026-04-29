@@ -7,7 +7,7 @@ const FinanceTracker = () => {
     const [spent, setSpent] = useState(0);
     const [earned, setEarned] = useState(0);
 
-    const [isAmountsVisible, setIsAmountsVisible] = useState(true);
+    const [isAmountsVisible, setIsAmountsVisible] = useState(false);
 
     // Modal state
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -87,7 +87,7 @@ const FinanceTracker = () => {
 
     return (
         <>
-            <div className="w-full min-h-[300px] flex flex-col justify-between rounded-[2rem] bg-[var(--surface-container-lowest)] p-6 shadow-[var(--shadow-focus)] relative overflow-hidden">
+            <div className="w-full min-h-[300px] flex flex-col justify-between rounded-[2rem] bg-[var(--surface-container-lowest)] p-6 shadow-[var(--shadow-focus)] relative overflow-hidden max-h-[450px]">
                 {/* Header Area */}
                 <div className="flex items-start justify-between gap-2">
                     <div>

@@ -11,6 +11,7 @@ import Calender from '../components/calender/Calender'
 import ActivityGraph from '../components/activity/ActivityGraph'
 import Goals from '../components/goals/Goals'
 import Quotes from '../components/quotes/Quotes'
+import Scratchpad from '../components/scratchpad/Scratchpad'
 
 const DashboardSection = ({ title, to, children, className = "" }) => (
     <div className={`flex flex-col gap-2 mt-4 ${className}`}>
@@ -80,6 +81,9 @@ const Home = () => {
                                 </DashboardSection>
                                 <DashboardSection title="Objectives" to="/goals" className="flex-1">
                                     <Goals />
+                                </DashboardSection>
+                                <DashboardSection title="Scratchpad" to="/scratchpad" className="h-[450px]">
+                                    <Scratchpad />
                                 </DashboardSection>
                             </div>
 

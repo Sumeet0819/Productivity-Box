@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Home, ListTodo, Wallet, Target, LogOut } from 'lucide-react'
+import { Home, ListTodo, Wallet, Target, LogOut, Code2 } from 'lucide-react'
 import { authService } from '../../services/api'
 
 const SideBar = () => {
@@ -36,6 +36,9 @@ const SideBar = () => {
                     </Link>
                     <Link to="/goals">
                         <Target size={24} className={getIconClass('/goals')} title="Strategic Goals" />
+                    </Link>
+                    <Link to="/scratchpad">
+                        <Code2 size={24} className={getIconClass('/scratchpad')} title="Scratchpad" />
                     </Link>
                 </div>
             </div>

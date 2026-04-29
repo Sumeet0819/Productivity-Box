@@ -63,7 +63,7 @@ const Todo = ({ fullScale = false }) => {
     const progress = tasks.length === 0 ? 0 : Math.round((completedCount / tasks.length) * 100);
 
     return (
-        <div className={`flex flex-col w-full h-full ${!fullScale ? 'rounded-[2rem] bg-[var(--surface-container-lowest)] p-6 shadow-[var(--shadow-focus)]' : ''}`}>
+        <div className={`flex flex-col w-full h-full ${!fullScale ? 'rounded-[2rem] bg-[var(--surface-container-lowest)] p-6 shadow-[var(--shadow-focus)] max-h-[450px]' : ''}`}>
             <div className={`flex items-start justify-between gap-4 ${fullScale ? 'mb-10' : 'mb-5'}`}>
                 <div className="flex items-center gap-3">
                     <div className={`flex items-center justify-center rounded-full bg-[rgba(0,106,60,0.12)] text-[var(--primary)] ${fullScale ? 'h-14 w-14' : 'h-11 w-11'}`}>

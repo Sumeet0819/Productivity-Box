@@ -48,7 +48,7 @@ const Calender = () => {
     };
 
     return (
-        <div className="w-full h-full rounded-[2rem] bg-[var(--surface-container-lowest)] p-7 shadow-[var(--shadow-focus)]">
+        <div className="w-full h-full rounded-[2rem] bg-[var(--surface-container-lowest)] p-7 shadow-[var(--shadow-focus)] max-h-[450px]">
             <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                     <div>

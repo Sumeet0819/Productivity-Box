@@ -56,7 +56,7 @@ const Goals = () => {
     const filteredGoals = goals.filter(g => g.type === type);
 
     return (
-        <div className="relative flex h-full flex-col rounded-[2rem] bg-[var(--surface-container-lowest)] p-6 shadow-[var(--shadow-focus)]">
+        <div className="relative flex h-full flex-col rounded-[2rem] bg-[var(--surface-container-lowest)] p-6 shadow-[var(--shadow-focus)] max-h-[450px]">
              <div className="absolute inset-x-6 top-6 h-24 rounded-[2rem] bg-[var(--surface-container-low)] blur-2xl opacity-50 pointer-events-none" />
              
              <div className="relative z-10 flex items-center justify-between mb-6">
